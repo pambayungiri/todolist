@@ -5,14 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To Do List</title>
+    <link rel="stylesheet" href="../css/styles.css">
   </head>
   <body>
-    <% if (kindOfCode === "saturday" || kindOfCode === "sunday") { %>
-    <h1 style="color: purple">it's a <%= kindOfCode %>!</h1>
-    <% } else { %>
-    <h1 style="color: blue">it's a <%= kindOfCode %>!</h1>
-    <% } %>
+    <h1><%= kindOfDay %></h1>
 
-    <p>why are you not working</p>
+    <ul>
+      <% for (let i = 0; i < newItemServer.length; i++) { %>
+      <li><%= newItemServer[i] %></li>
+      <% } %>
+    </ul>
+
+    <form action="/" method="post">
+      <input type="text" name="newItem" placeholder="insert the list" />
+      <button type="submit" name="button">add</button>
+    </form>
   </body>
 </html>

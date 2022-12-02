@@ -3,26 +3,31 @@ const app = express();
 const bodyParser = require("body-parser");
 const port = 3000;
 
+let items = ["buy food", "cook food", "eat food"];
+
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", function (req, res) {
-  var today = new Date();
-  var day = "";
-  var nameOfDay = [
-    "sunday",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-  ];
+  let today = new Date();
 
-  day = nameOfDay[today.getDay()];
+  let options = {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  };
 
-  res.render("list", { kindOfCode: day });
+  let day = today.toLocaleDateString("id-ID", options);
+
+  res.render("list", { kindOfDay: day, newItemServer: items });
+});
+
+app.post("/", function (req, res) {
+  let item = req.body.newItem;
+  items.push(item);
+  res.redirect("/");
 });
 
 app.listen(port, () => {
