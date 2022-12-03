@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const port = 3000;
 
 let items = ["buy food", "cook food", "eat food"];
-
+let workItems = [];
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,13 +22,27 @@ app.get("/", function (req, res) {
 
   let day = today.toLocaleDateString("id-ID", options);
 
-  res.render("list", { kindOfDay: day, newItemServer: items });
+  res.render("list", { listTitle: day, newListItems: items });
 });
 
 app.post("/", function (req, res) {
   let item = req.body.newItem;
-  items.push(item);
-  res.redirect("/");
+  console.log(req.body.list);
+  if (req.body.list === "Work") {
+    workItems.push(item);
+    res.redirect("/work");
+  } else {
+    items.push(item);
+    res.redirect("/");
+  }
+});
+
+app.get("/work", function (req, res) {
+  res.render("list", { listTitle: "Work List", newListItems: workItems });
+});
+
+app.get("/about", function (req, res) {
+  res.render("about");
 });
 
 app.listen(port, () => {
