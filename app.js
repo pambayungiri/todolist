@@ -7,13 +7,15 @@ const _ = require("lodash");
 const port = 3000;
 
 const day = date.getDate();
-const workItems = [];
 
 mongoose.set("strictQuery", true);
 
-mongoose.connect("mongodb://127.0.0.1:27017/todolistDB", {
-  useNewUrlParser: true,
-});
+mongoose.connect(
+  "mongodb+srv://marshpotao:giriman61121@cluster0.bgtxyyu.mongodb.net/todolistDB",
+  {
+    useNewUrlParser: true,
+  }
+);
 
 const itemSchema = new mongoose.Schema({
   name: {
