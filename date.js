@@ -3,9 +3,6 @@ exports.getDate = function () {
 
   const options = {
     weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
   };
 
   const day = today.toLocaleDateString("id-ID", options);
