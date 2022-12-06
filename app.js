@@ -8,38 +8,32 @@ const port = 3000;
 // const items = ["buy food", "cook food", "eat food"];
 // const workItems = [];
 
-mongoose.set('strictQuery', true);
+mongoose.set("strictQuery", true);
 
-mongoose.connect("mongodb://127.0.0.1:27017/todolistDB", {useNewUrlParser: true});
+mongoose.connect("mongodb://127.0.0.1:27017/todolistDB", {
+  useNewUrlParser: true,
+});
 
 const itemSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "there's no name in it"],
-  }
-})
+  },
+});
 
 const Item = mongoose.model("Item", itemSchema);
 
 const item1 = new Item({
-  name : "Welcome to your todolist!",
-})
+  name: "Welcome to your todolist!",
+});
 const item2 = new Item({
-  name : "Hit the + button to add a new item.",
-})
+  name: "Hit the + button to add a new item.",
+});
 const item3 = new Item({
-  name : "<-- Hit this to delete an item.",
-})
+  name: "<-- Hit this to delete an item.",
+});
 
 const defaultItems = [item1, item2, item3];
-
-Item.insertMany(defaultItems, function (err) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("succesfully saved all the default items to todolistDB");
-  }
-})
 
 app.set("view engine", "ejs");
 
@@ -48,7 +42,26 @@ app.use(express.static("public"));
 
 app.get("/", function (req, res) {
   const day = date.getDate();
-  res.render("list", { listTitle: day, newListItems: items });
+  Item.find({}, function (err, item) {
+    if (err) {
+      console.log(err);
+    } else {
+      if (item.length === 0) {
+        Item.insertMany(defaultItems, function (err) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(
+              "succesfully saved all the default items to todolistDB"
+              );
+            }
+          });
+          res.redirect("/");
+      } else {
+        res.render("list", { listTitle: day, newListItems: item });
+      }
+    }
+  });
 });
 
 app.post("/", function (req, res) {
