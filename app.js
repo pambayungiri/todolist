@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const date = require(__dirname + "/date.js");
 const _ = require("lodash");
-const port = 3000;
+const port = process.env.PORT;
 
 const day = date.getDate();
 
@@ -147,6 +147,6 @@ app.get("/about", function (req, res) {
   res.render("about");
 });
 
-app.listen(port, () => {
+app.listen(port || 3000, () => {
   console.log(`Example app listening on port ${port}`);
 });
